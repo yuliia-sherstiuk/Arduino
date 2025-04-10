@@ -1,9 +1,9 @@
+
 #include <LiquidCrystal.h>
 
-// Инициализация LCD: rs, en, d4, d5, d6, d7
 LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);
 
-// Пины светодиодов и кнопок
+
 const int ledPins[] = {2, 3, 4, 5, 6};
 const int buttonPins[] = {7, 8, 9, 10, 11};
 const int buzzerPin = 12;
@@ -19,20 +19,20 @@ bool gameActive = true;
 int difficultyDelay = 500;
 
 void setup() {
-  // LCD
+ 
   lcd.begin(16, 2);
   lcd.setCursor(0, 0);
   lcd.print(" Jeu de Memoire ");
   delay(2000);
 
-  // Пины
+  
   for (int i = 0; i < NUM_COLORS; i++) {
     pinMode(ledPins[i], OUTPUT);
-    pinMode(buttonPins[i], INPUT_PULLUP); // кнопки с подтяжкой
+    pinMode(buttonPins[i], INPUT_PULLUP); 
   }
 
   pinMode(buzzerPin, OUTPUT);
-  randomSeed(analogRead(A0)); // случайность
+  randomSeed(analogRead(A0)); 
 
   startGame();
 }
@@ -54,7 +54,7 @@ void startGame() {
 
 void generateSequence() {
   for (int i = 0; i < MAX_SEQUENCE; i++) {
-    sequence[i] = random(0, NUM_COLORS); // 0 à 4
+    sequence[i] = random(0, NUM_COLORS); 
   }
 }
 
@@ -84,7 +84,7 @@ void getPlayerInput() {
   while (inputIndex < level) {
     for (int i = 0; i < NUM_COLORS; i++) {
       if (digitalRead(buttonPins[i]) == LOW) {
-        delay(50); // антидребезг
+        delay(50); 
         while (digitalRead(buttonPins[i]) == LOW);
 
         flashLed(i);
@@ -109,8 +109,8 @@ void getPlayerInput() {
   score++;
   level++;
 
-  // Повышение сложности
-  if (level % 30 == 0) {
+  
+  if (level % 5 == 0) {
     difficultyDelay = max(200, difficultyDelay - 50);
   }
 }
@@ -122,7 +122,7 @@ void flashLed(int index) {
 }
 
 void playError() {
-  tone(buzzerPin, 1000, 700);
-  delay(700);
+  tone(buzzerPin, 300, 500);
+  delay(500);
   noTone(buzzerPin);
 }
